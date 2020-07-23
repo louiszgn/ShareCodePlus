@@ -7,6 +7,8 @@ from model import save_doc_as_file, \
                   read_doc_as_file, \
                   get_last_entries_from_files
 
+from languages import langs
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -25,7 +27,7 @@ def edit(uid):
     code = read_doc_as_file(uid)
     if code is None:
         return render_template('error.html',uid=uid)
-    d = dict( uid=uid, code=code,
+    d = dict( uid=uid, code=code, langs=langs,
               url="{}view/{}".format(request.host_url,uid))
     return render_template('edit.html', **d) 
 

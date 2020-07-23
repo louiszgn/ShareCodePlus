@@ -24,10 +24,10 @@ def create():
     
 @app.route('/edit/<string:uid>/')
 def edit(uid):
-    code = read_doc_as_file(uid)
+    code, lang = read_doc_as_file(uid)
     if code is None:
         return render_template('error.html',uid=uid)
-    d = dict( uid=uid, code=code, langs=langs,
+    d = dict( uid=uid, code=code, langs=langs, lang=lang,
               url="{}view/{}".format(request.host_url,uid))
     return render_template('edit.html', **d) 
 
@@ -35,17 +35,18 @@ def edit(uid):
 def publish():
     code = request.form['code']
     uid  = request.form['uid']
-    save_doc_as_file(uid,code)
+    lang  = request.form['language']
+    save_doc_as_file(uid,code,lang)
     return redirect("{}{}/{}".format(request.host_url,
                                      request.form['submit'],
                                      uid))
 
 @app.route('/view/<string:uid>/')
 def view(uid):
-    code = read_doc_as_file(uid)
+    code, lang = read_doc_as_file(uid)
     if code is None:
         return render_template('error.html',uid=uid)
-    d = dict( uid=uid, code=code,
+    d = dict( uid=uid, code=code, lang=lang,
               url="{}view/{}".format(request.host_url,uid))
     return render_template('view.html', **d)
 

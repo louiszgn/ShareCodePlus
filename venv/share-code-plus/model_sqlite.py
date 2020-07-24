@@ -4,11 +4,14 @@ from string import ascii_letters, digits
 from itertools import chain
 from random import choice
 from sqlite3 import *
+from flask import request
+import datetime
+import socket
 import os
 
 
 create_table_codes = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
-create_table_users = "CREATE TABLE IF NOT EXISTS users (ip TEXT, nav TEXT, date DATETIME)"
+create_table_users = "CREATE TABLE IF NOT EXISTS users (uid TEXT, ip TEXT, nav TEXT, date DATETIME)"
 connect(create_table_codes)
 connect(create_table_users)
 
@@ -47,15 +50,26 @@ def save_code(uid=None,code=None,lang=None):
     '''Crée/Enregistre le document sous la forme d'un fichier
     data/uid. Return the file name.
     '''
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    ua = flask.request.user_agent.browser
+    datetime = datetime.datetime.now()
+
     if uid is None:
         uid = create_uid()
         code = '# Write your code here...'
         lang = "Python"
-        insert = "INSERT INTO codes(uid, code, language) VALUES(?, ?, ?)"
-        connectdb(insert, "insert", uid, code, lang)
+        insert_code = "INSERT INTO codes(uid, code, language) VALUES(?, ?, ?)"
+        connectdb(insert_code, "insert", uid, code, lang)
+
+        insert_user = "INSERT INTO users(uid, ip, nav, date) VALUES(?, ?, ?, ?)"
+        connectdb(insert_user, "insert", uid, IPAddr, ua, datetime)
     else:
-        update = "UPDATE codes SET code = ?, language = ? WHERE uid = ?"
-        connectdb(update, "insert", code, lang, uid)
+        update_code = "UPDATE codes SET code = ?, language = ? WHERE uid = ?"
+        connectdb(update_code, "insert", code, lang, uid)
+
+        update_user = "UPDATE users SET ip = ?, nav = ?, date = ? WHERE uid = ?"
+        connectdb(update_user, "insert", IPAddr, ua, datetime, uid)
 
     return uid
 
@@ -76,12 +90,3 @@ def get_last_entries_from_db(n=10,nlines=10):
             break
         d.append({ 'uid':r[i][0], 'code':r[i][1] })
     return d
-
-
-# cur.close()
-# conn.close()
-
-# cur.execute("INSERT INTO codes(uid, code, language) VALUES(uid, code, lang)")
-
-# x = 'Patrick'
-# cur.execute("SELECT code,language FROM codes WHERE uid = ?",(uid,))

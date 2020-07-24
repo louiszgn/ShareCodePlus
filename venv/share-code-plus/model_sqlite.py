@@ -49,9 +49,12 @@ def save_code(uid=None,code=None,lang=None):
         uid = create_uid()
         code = '# Write your code here...'
         lang = "Python"
-    
-    insert = "INSERT INTO codes(uid, code, language) VALUES(?, ?, ?)"
-    connectdb(insert, "insert", uid, code, lang)
+        insert = "INSERT INTO codes(uid, code, language) VALUES(?, ?, ?)"
+        connectdb(insert, "insert", uid, code, lang)
+    else:
+        update = "UPDATE codes SET code = ?, language = ? WHERE uid = ?"
+        connectdb(update, "insert", code, lang, uid)
+
     return uid
 
 def read_code(uid):

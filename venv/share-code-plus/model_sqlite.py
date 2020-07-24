@@ -6,9 +6,32 @@ from random import choice
 from sqlite3 import *
 import os
 
-conn = connect("data.txt")
-cur = conn.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)")
+
+create_table = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
+connect(create_table)
+
+def connectdb(var, command=None, uid=None, code=None, lang=None):
+    """ Gère la connexion à la bdd """
+    conn = connect("data.txt")
+    cur = conn.cursor()
+    r = []
+    if lang:
+        cur.execute(var, (uid, code, lang))
+    elif code:
+        cur.execute(var, (uid, code))
+    elif uid:
+        cur.execute(var, (uid,))
+    else:
+        cur.execute(var)
+    
+    if command is "insert":
+        conn.commit()
+    if command is "select":
+        r = cur.fetchall()
+
+    cur.close()
+    conn.close()
+    return r
 
 
 def create_uid(n=9):
@@ -26,40 +49,29 @@ def save_code(uid=None,code=None,lang=None):
         uid = create_uid()
         code = '# Write your code here...'
         lang = "Python"
-    curs = conn.cursor()
-    curs.execute("INSERT INTO codes(uid, code, language) VALUES(uid, code, lang)")
-    conn.commit()
+    
+    insert = "INSERT INTO codes(uid, code, language) VALUES(?, ?, ?)"
+    connectdb(insert, "insert", uid, code, lang)
     return uid
 
 def read_code(uid):
     '''Lit le document data/uid'''
-    try:
-        curs = conn.cursor()
-        curs.execute("SELECT code,lang FROM codes WHERE uid = ?",(uid,))
-        r = curs.fetchone()
-        return r
-    except:
-        return None
+    select = "SELECT code,language FROM codes WHERE uid = ?"
+    r = connectdb(select, "select", uid)
+    return r
 
-def get_last_entries_from_files(n=10,nlines=10):
-    entries = os.scandir('data')
+def get_last_entries_from_db(n=10,nlines=10):
+    select = "SELECT uid,code FROM codes"
+    r = connectdb(select, "select")
+    # r = r.sort(key=lambda t: t[0])
+
     d = []
-    entries = sorted(list(entries),
-                     key=(lambda e: e.stat().st_mtime),
-                     reverse=True) 
-    for i,e in enumerate(entries):
+    for i in range(len(r)):
         if i >= n:
             break
-        if e.name.startswith('.'):
-            continue
-        if e.name.endswith('.lang'):
-            continue
-        with open('data/{}'.format(e.name)) as fd:
-            code = ''.join(( fd.readline() for i in range(nlines) ))
-            if fd.readline():
-                code += '\n...'
-        d.append({ 'uid':e.name, 'code':code })
+        d.append({ 'uid':r[i][0], 'code':r[i][1] })
     return d
+
 
 # cur.close()
 # conn.close()
@@ -67,4 +79,4 @@ def get_last_entries_from_files(n=10,nlines=10):
 # cur.execute("INSERT INTO codes(uid, code, language) VALUES(uid, code, lang)")
 
 # x = 'Patrick'
-# cur.execute("SELECT code,lang FROM codes WHERE uid = ?",(uid,))
+# cur.execute("SELECT code,language FROM codes WHERE uid = ?",(uid,))

@@ -15,17 +15,19 @@ create_table_users = "CREATE TABLE IF NOT EXISTS users (uid TEXT, ip TEXT, nav T
 connect(create_table_codes)
 connect(create_table_users)
 
-def connectdb(var, command=None, uid=None, code=None, lang=None):
+def connectdb(var, command=None, var1=None, var2=None, var3=None, var4=None):
     """ Gère la connexion à la bdd """
     conn = connect("data.txt")
     cur = conn.cursor()
     r = []
-    if lang:
-        cur.execute(var, (uid, code, lang))
-    elif code:
-        cur.execute(var, (uid, code))
-    elif uid:
-        cur.execute(var, (uid,))
+    if var4:
+        cur.execute(var, (var1, var2, var3, var4))
+    if var3:
+        cur.execute(var, (var1, var2, var3))
+    elif var2:
+        cur.execute(var, (var1, var2))
+    elif var1:
+        cur.execute(var, (var1,))
     else:
         cur.execute(var)
     
@@ -52,8 +54,8 @@ def save_code(uid=None,code=None,lang=None):
     '''
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
-    ua = flask.request.user_agent.browser
-    datetime = datetime.datetime.now()
+    ua = request.user_agent.browser
+    dt = datetime.datetime.now()
 
     if uid is None:
         uid = create_uid()
@@ -63,13 +65,13 @@ def save_code(uid=None,code=None,lang=None):
         connectdb(insert_code, "insert", uid, code, lang)
 
         insert_user = "INSERT INTO users(uid, ip, nav, date) VALUES(?, ?, ?, ?)"
-        connectdb(insert_user, "insert", uid, IPAddr, ua, datetime)
+        connectdb(insert_user, "insert", uid, IPAddr, ua, dt)
     else:
         update_code = "UPDATE codes SET code = ?, language = ? WHERE uid = ?"
         connectdb(update_code, "insert", code, lang, uid)
 
         update_user = "UPDATE users SET ip = ?, nav = ?, date = ? WHERE uid = ?"
-        connectdb(update_user, "insert", IPAddr, ua, datetime, uid)
+        connectdb(update_user, "insert", IPAddr, ua, dt, uid)
 
     return uid
 

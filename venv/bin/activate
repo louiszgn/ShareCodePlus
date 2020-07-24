@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/media/louis/5A76B36476B33F95/Cours/Cours (Mastère 1ère année)/Testing/ShareCodePlus/venv"
+VIRTUAL_ENV="/media/louis/5A76B36476B33F95/Cours/Cours (Mastère 1ère année)/Python/ShareCodePlus/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -16,7 +16,7 @@ def connectdb(var, command=None, var1=None, var2=None, var3=None, var4=None):
     r = []
     if var4:
         cur.execute(var, (var1, var2, var3, var4))
-    if var3:
+    elif var3:
         cur.execute(var, (var1, var2, var3))
     elif var2:
         cur.execute(var, (var1, var2))

@@ -9,12 +9,6 @@ import datetime
 import socket
 import os
 
-
-create_table_codes = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
-create_table_users = "CREATE TABLE IF NOT EXISTS users (uid TEXT, ip TEXT, nav TEXT, date DATETIME)"
-connect(create_table_codes)
-connect(create_table_users)
-
 def connectdb(var, command=None, var1=None, var2=None, var3=None, var4=None):
     """ Gère la connexion à la bdd """
     conn = connect("data.txt")
@@ -40,6 +34,10 @@ def connectdb(var, command=None, var1=None, var2=None, var3=None, var4=None):
     conn.close()
     return r
 
+create_table_codes = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
+create_table_users = "CREATE TABLE IF NOT EXISTS users (uid TEXT, ip TEXT, nav TEXT, date DATETIME)"
+connectdb(create_table_codes)
+connectdb(create_table_users)
 
 def create_uid(n=9):
     '''Génère une chaîne de caractères alétoires de longueur n

@@ -10,13 +10,16 @@
 		<form method="GET" action="/create">
 			<button name="create">Create</button>
 		</form>
+		<form method="GET" action="/admin">
+			<button name="admin">Admin</button>
+		</form>
 		{% if last_added %}
-		<h2>Derniers ajouts</h2>
-		{% for entry in last_added %}
-		<p><a href="/view/{{ entry["uid"] }}">{{ entry["uid"] }}</a>
-		<p><pre>{{ entry["code"] }}</pre>
-		<hr/>
-		{% endfor %}
+			<h2>Derniers ajouts</h2>
+			{% for entry in last_added %}
+				<p><a href="/view/{{ entry["uid"] }}">{{ entry["uid"] }}</a>
+				<p><pre>{{ entry["code"] }}</pre></p>
+				<hr/>
+			{% endfor %}
 		{% endif %}
 	</body>
 </html>

@@ -79,7 +79,7 @@ def read_code(uid):
     r = connectdb(select, "select", uid)
     return r
 
-def get_last_entries_from_db(n=10,nlines=10):
+def get_last_entries_from_db(n=10):
     select = "SELECT uid,code FROM codes"
     r = connectdb(select, "select")
     d = []
@@ -90,13 +90,13 @@ def get_last_entries_from_db(n=10,nlines=10):
         d.append({ 'uid':r[i][0], 'code':r[i][1] })
     return d
 
-def get_users_from_db(n=10,nlines=10):
-    select = "SELECT * FROM users"
+def get_users_from_db(n=10):
+    select = "SELECT uid,ip,nav,date FROM users"
     r = connectdb(select, "select")
     d = []
     
     for i in range(len(r)):
         if i >= n:
             break
-        d.append({ 'uid':r[i][0], 'ip':r[i][1], 'nav':r[i][2], 'date'r[i][3] })
+        d.append({ 'uid':r[i][0], 'ip':r[i][1], 'nav':r[i][2], 'date':r[i][3] })
     return d

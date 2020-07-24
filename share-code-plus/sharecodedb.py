@@ -5,7 +5,8 @@ from flask import Flask, request, render_template, \
 
 from model_sqlite import save_code, \
                   read_code, \
-                  get_last_entries_from_db
+                  get_last_entries_from_db, \
+                  get_users_from_db
 
 from languages import langs
 
@@ -16,6 +17,11 @@ def index():
     #d = { 'last_added':[ { 'uid':'testuid', 'code':'testcode' } ] }
     d = { 'last_added':get_last_entries_from_db() }
     return render_template('index.html',**d)
+
+@app.route('/admin/')
+def admin():
+    d = { 'users':get_users_from_db() }
+    return render_template('admin.html',**d)
 
 @app.route('/create')
 def create():
@@ -49,10 +55,6 @@ def view(uid):
     d = dict( uid=uid, code=infos[0][0], lang=infos[0][1],
               url="{}view/{}".format(request.host_url,uid))
     return render_template('view.html', **d)
-
-@app.route('/admin/')
-def admin():
-    pass
 
 if __name__ == '__main__':
     app.run()

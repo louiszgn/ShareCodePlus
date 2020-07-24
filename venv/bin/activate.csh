@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/media/louis/5A76B36476B33F95/Cours/Cours (Mastère 1ère année)/Testing/ShareCodePlus/venv"
+setenv VIRTUAL_ENV "/media/louis/5A76B36476B33F95/Cours/Cours (Mastère 1ère année)/Python/ShareCodePlus/venv"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

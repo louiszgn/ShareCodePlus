@@ -7,8 +7,10 @@ from sqlite3 import *
 import os
 
 
-create_table = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
-connect(create_table)
+create_table_codes = "CREATE TABLE IF NOT EXISTS codes (uid TEXT, code TEXT, language TEXT)"
+create_table_users = "CREATE TABLE IF NOT EXISTS users (ip TEXT, nav TEXT, date DATETIME)"
+connect(create_table_codes)
+connect(create_table_users)
 
 def connectdb(var, command=None, uid=None, code=None, lang=None):
     """ Gère la connexion à la bdd """

@@ -79,7 +79,7 @@ def read_code(uid):
     r = connectdb(select, "select", uid)
     return r
 
-def get_last_entries_from_db(n=10):
+def get_last_entries_from_db(n=15):
     select = "SELECT uid,code FROM codes"
     r = connectdb(select, "select")
     d = []
@@ -90,7 +90,7 @@ def get_last_entries_from_db(n=10):
         d.append({ 'uid':r[i][0], 'code':r[i][1] })
     return d
 
-def get_users_from_db(n=10):
+def get_users_from_db(n=15):
     select = "SELECT uid,ip,nav,date FROM users"
     r = connectdb(select, "select")
     d = []

@@ -17,7 +17,7 @@ def index():
     d = { 'last_added':get_last_entries_from_db() }
     return render_template('index.html',**d)
 
-@app.route('/admin')
+@app.route('/admin/')
 def admin():
     d = { 'users':get_users_from_db() }
     return render_template('admin.html',**d)

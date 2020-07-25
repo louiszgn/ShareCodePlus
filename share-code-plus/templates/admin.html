@@ -4,17 +4,18 @@
 	</head>
 	<body>
 		<h1>Code Share: Share your codes!</h1>
-		<p align=center>
-		<img width=150 src='static/The_GNU_logo.png'/>
-		<p align=center>
+		<p align=center><img width=150 src='../static/The_GNU_logo.png'/></p>
+		<a href="/" style="padding:5px 10px; border: 1px solid black;border-radius: 20px;">Home</a>
 		<h2>Admin</h2>
 		{% if users%}
 			<h2>Logs</h2>
 			{% for user in users %}
+				<div style="display: flex; justify-content: space-around;">
 				<p><a href="/view/{{ user["uid"] }}">{{ user["uid"] }}</a>
 				<p>Ip : {{ user["ip"] }}</p>
 				<p>Navigateur : {{ user["nav"] }}</p>
 				<p>Date : {{ user["date"] }}</p>
+				</div>
 				<hr/>
 			{% endfor %}
 		{% endif %}
